@@ -1,0 +1,35 @@
+name: CI-Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  also:
+    runs-on: ubuntu-latest
+    env:
+      FAKE_SECRET_TOKEN: a55a41bb17658073a3587e68fc7ab4a96bc3119071a09795cf9715f5a801091326904bd8
+      DEPLOY_ENV: production
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: npm test
+
+    - name: Echo Fake Token
+      run: echo "Using token: $FAKE_SECRET_TOKEN"
+
+    - name: Deploy to production
+      run: echo "Deploying to production with token $FAKE_SECRET_TOKEN"
